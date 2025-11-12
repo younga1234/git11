@@ -1,0 +1,50 @@
+# Build directories
+build*/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE
+.vscode/
+.vs/
+*.suo
+*.user
+
+# Archives
+_archived_old_files/
+*.zip
+
+# Logs
+*.log
+.logs/
+
+# Temporary
+nul
+*.tmp
+*.bak
+
+# Qt
+*.qm
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Node.js
+node_modules/
+package-lock.json
+*.tgz
+
+# MCP build artifacts
+.claude/mcp/*/dist/
+.claude/mcp/*/node_modules/
+# MCP Skills 패키징 결과
+*.zip
+.claude/snapshots/

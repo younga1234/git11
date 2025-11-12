@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+*.pid
+.npm

@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "mcp-code-execution": {
+      "command": "node",
+      "args": ["dist/server/index.js"],
+      "env": {
+        "MCP_SERVER_URL": "http://localhost:3000",
+        "TOOLS_DIR": "${workspaceFolder}/src/tools"
+      }
+    },
+    "docfork-mcp": {
+      "command": "npx",
+      "args": ["-y", "docfork-mcp"]
+    },
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-exa"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      }
+    },
+    "neo4j-memory": {
+      "command": "npx",
+      "args": ["-y", "knowall-ai-mcp-neo-4-j-agent-memory"],
+      "env": {
+        "NEO4J_URI": "${NEO4J_URI:-bolt://localhost:7687}",
+        "NEO4J_USER": "${NEO4J_USER:-neo4j}",
+        "NEO4J_PASSWORD": "${NEO4J_PASSWORD}"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "smithery-ai-server-sequential-thinking"]
+    },
+    "clear-thought": {
+      "command": "npx",
+      "args": ["-y", "waldzellai-clear-thought"]
+    }
+  }
+}
