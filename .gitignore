@@ -16,6 +16,7 @@ build*/
 # Archives
 _archived_old_files/
 *.zip
+backup/
 
 # Logs
 *.log
