@@ -1,0 +1,70 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__waldzellai-clear-thought__clear_thought",
+      "mcp__aas-ee-open-websearch__search",
+      "mcp__aas-ee-open-websearch__fetchGithubReadme",
+      "mcp__aas-ee-open-websearch__fetchCsdnArticle",
+      "mcp__aas-ee-open-websearch__fetchJuejinArticle",
+      "mcp__ide__getDiagnostics",
+      "mcp__ide__executeCode",
+      "Task(description:*)",
+      "Skill(skill:*)",
+      "SlashCommand(command:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(git:*)",
+      "Bash(cmake:*)",
+      "Bash(make:*)",
+      "Bash(copy:*)",
+      "Bash(mkdir:*)",
+      "Bash(nul)",
+      "Bash(move:*)",
+      "Bash(dir /s /b *.cpp *.h *.ui *.ts *.qrc CMakeLists.txt 2)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(gigamesh.exe)",
+      "Bash(DongArch3D.exe)",
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git push)",
+      "Bash(git log:*)",
+      "Bash(cat:*)",
+      "Bash(git check-ignore:*)",
+      "Skill(skill-creator)",
+      "Bash(python:*)",
+      "Bash(del:*)",
+      "Bash(type:*)",
+      "Bash(echo:*)",
+      "Bash(ps:*)",
+      "Bash(grep:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enableAllProjectMcpServers": true,
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"A:\\1105\\.claude\\hooks\\session-start.sh\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "코드 또는 문서가 변경되었습니다. 다음을 자동으로 수행하세요:\n\n1. .dongarch3d-progress.json 파일이 변경되었다면 /dongarch-status 실행\n2. GigaMesh/gui/src/ 폴더의 파일이 변경되었다면:\n   - 변경 내용을 CLAUDE.md에 간단히 기록 (# Recent Changes 섹션에 타임스탬프와 함께)\n   - Git log 확인하여 최근 커밋 메시지 기록\n3. 중요한 변경사항이라면 docs/dongarch3d/.logs/daily/ 폴더에 로그 추가\n\n간단히 기록만 하고, 사용자에게는 '✅ Context 자동 업데이트 완료'만 출력하세요."
+          }
+        ]
+      }
+    ]
+  }
+}

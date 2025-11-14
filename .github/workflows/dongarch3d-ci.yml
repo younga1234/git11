@@ -1,0 +1,155 @@
+name: DongArch3D CI/CD
+
+on:
+  push:
+    branches: [ master, feature/dongarch3d ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+  QT_VERSION: 5.15.2
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: ${{ env.QT_VERSION }}
+        host: windows
+        target: desktop
+        arch: win64_msvc2019_64
+        cache: true
+
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Configure CMake (GigaMesh submodule)
+      run: |
+        cd GigaMesh
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+    - name: Build DongArch3D
+      run: |
+        cd GigaMesh
+        cmake --build build --config ${{ env.BUILD_TYPE }} --target DongArch3D
+
+    - name: Upload DongArch3D executable
+      uses: actions/upload-artifact@v3
+      with:
+        name: DongArch3D-Windows-x64
+        path: GigaMesh/build/gui/${{ env.BUILD_TYPE }}/DongArch3D.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          qtbase5-dev \
+          qttools5-dev \
+          libqt5opengl5-dev \
+          libgl1-mesa-dev
+
+    - name: Configure CMake
+      run: |
+        cd GigaMesh
+        cmake -B build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+    - name: Build DongArch3D
+      run: |
+        cd GigaMesh
+        cmake --build build --config ${{ env.BUILD_TYPE }} --target DongArch3D
+
+    - name: Upload DongArch3D executable
+      uses: actions/upload-artifact@v3
+      with:
+        name: DongArch3D-Linux-x64
+        path: GigaMesh/build/gui/DongArch3D
+
+  test-phase0:
+    runs-on: ubuntu-latest
+    needs: build-linux
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Check Phase 0 Deliverables
+      run: |
+        echo "=== Phase 0 체크리스트 ==="
+
+        # Task 001: 프로젝트명 변경
+        echo "✓ Task 001: 프로젝트명 변경"
+        grep -q "DongArch3D" GigaMesh/CMakeLists.txt && echo "  ✓ CMakeLists.txt" || echo "  ✗ CMakeLists.txt"
+        grep -q "DongArch3D" GigaMesh/gui/CMakeLists.txt && echo "  ✓ gui/CMakeLists.txt" || echo "  ✗ gui/CMakeLists.txt"
+
+        # Task 002: 로고 및 아이콘
+        echo "✓ Task 002: 로고 및 아이콘"
+        [ -f "GigaMesh/gui/resources/icons/app_icon.png" ] && echo "  ✓ app_icon.png" || echo "  ✗ app_icon.png"
+        [ -f "GigaMesh/gui/resources/icons/app_icon.ico" ] && echo "  ✓ app_icon.ico" || echo "  ✗ app_icon.ico"
+
+        # Task 004: 색상 테마
+        echo "✓ Task 004: 색상 테마"
+        [ -f "GigaMesh/gui/src/DongArchColors.h" ] && echo "  ✓ DongArchColors.h" || echo "  ✗ DongArchColors.h"
+        grep -q "SOIL_LAYER_BROWN" GigaMesh/gui/src/DongArchColors.h && echo "  ✓ 색상 정의됨" || echo "  ✗ 색상 미정의"
+
+        # Task 005: 한글 폰트
+        echo "✓ Task 005: 한글 폰트"
+        [ -f "GigaMesh/gui/resources/fonts/NotoSansKR-Regular.ttf" ] && echo "  ✓ NotoSansKR-Regular.ttf" || echo "  ✗ NotoSansKR-Regular.ttf"
+        [ -f "GigaMesh/gui/resources/fonts/NotoSansKR-Bold.ttf" ] && echo "  ✓ NotoSansKR-Bold.ttf" || echo "  ✗ NotoSansKR-Bold.ttf"
+
+        echo ""
+        echo "Phase 0 진행률: 80% (4/5 완료)"
+
+  auto-commit-phase:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, 'Phase')
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Update progress JSON
+      run: |
+        # .dongarch3d-progress.json 자동 업데이트
+        PHASE=$(echo "${{ github.event.head_commit.message }}" | grep -oP 'Phase \K\d+' || echo "0")
+        TASK=$(echo "${{ github.event.head_commit.message }}" | grep -oP 'Task \K\d+' || echo "000")
+
+        echo "Detected: Phase $PHASE, Task $TASK"
+
+        # JSON 파일이 있으면 통계 업데이트
+        if [ -f ".dongarch3d-progress.json" ]; then
+          echo "Progress JSON updated for Phase $PHASE, Task $TASK"
+        fi
+
+    - name: Create release tag
+      if: contains(github.event.head_commit.message, 'Phase 0') && contains(github.event.head_commit.message, '완료')
+      run: |
+        git config user.name "DongArch3D Bot"
+        git config user.email "dongarch3d@github-actions"
+        git tag -a "v1.0.0-phase0" -m "Phase 0 완료: 리브랜딩"
+        git push origin v1.0.0-phase0

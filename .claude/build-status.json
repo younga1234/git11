@@ -1,0 +1,169 @@
+{
+  "lastUpdate": "2025-11-10T12:15:00Z",
+  "linuxStatus": "success",
+  "windowsStatus": "build_success",
+  "currentCommit": "764680f",
+  "buildRequest": {
+    "commit": "764680f",
+    "target": "DongArch3D",
+    "config": "Release",
+    "description": "Fix: analyticsConfig.h 누락 매크로 추가 후 빌드"
+  },
+  "buildResult": {
+    "success": true,
+    "message": "✅ BUILD SUCCESS! analyticsConfig.h 수정 후 DongArch3D.exe 빌드 성공",
+    "timestamp": "2025-11-10T12:15:00Z",
+    "executable": {
+      "path": "GigaMesh/build_korean/gui/Release/DongArch3D.exe",
+      "size": "26MB",
+      "timestamp": "2025-11-10 12:12"
+    },
+    "buildDetails": {
+      "compiler": "MSVC 17.14.23 (Visual Studio 2022)",
+      "qt": "5.15.2 msvc2019_64",
+      "warnings": "적음 (type conversion, QButtonGroup deprecated)",
+      "errors": "0",
+      "rebaseInfo": {
+        "commitsIntegrated": 44,
+        "fromCommit": "8aa71ca",
+        "toCommit": "764680f",
+        "conflicts": 3,
+        "conflictsResolved": [
+          "GigaMesh/CMakeLists.txt (glm 1.0.1 comment) - commit c70d507",
+          "GigaMesh/gui/src/analyticsConfig.h (1차: HEAD 버전 선택) - commit c70d507",
+          "GigaMesh/gui/src/analyticsConfig.h (2차: HEAD 버전 유지) - commit 79b2cd2",
+          "GigaMesh/gui/src/analyticsConfig.h (KEY 매크로 누락 수정) - commit 764680f"
+        ]
+      }
+    },
+    "progress": "✅ git rebase 완료 + analyticsConfig.h 수정 + 빌드 성공!"
+  },
+  "resolvedIssues": [
+    "glm CMake 버전 호환성 ✅",
+    "LaTeX 템플릿 4개 파일 ✅",
+    "NPR 텍스처 7개 파일 ✅",
+    "archaeology 아이콘 QRC ✅",
+    "DongArch C++ 컴파일 오류 16/16개 ✅",
+    "QtConcurrent 링킹 오류 19/19개 ✅",
+    "Qt DLL 의존성 배포 ✅ (windeployqt)",
+    "UI 영어 텍스트 제거 ✅ (완전 한국어화)",
+    "Shift/Ctrl/Space 키 크래시 방지 ✅",
+    "Qt 번역 파일 생성 ✅ (lrelease .qm files)",
+    "git rebase 충돌 3개 해결 ✅ (CMakeLists.txt + analyticsConfig.h x2)",
+    "analyticsConfig.h KEY 매크로 누락 ✅ (rebase 후 컴파일 오류 수정)"
+  ],
+  "buildHistory": [
+    {
+      "commit": "764680f",
+      "status": "build_success",
+      "message": "analyticsConfig.h 수정 후 빌드",
+      "result": "✅ DongArch3D.exe 빌드 성공 (26MB)",
+      "timestamp": "2025-11-10T12:15:00Z",
+      "changes": "Fixed missing KEY and TRACKING_ID macros in analyticsConfig.h",
+      "fix": "Added empty placeholder macros for disabled analytics"
+    },
+    {
+      "commit": "c70d507",
+      "status": "build_failed",
+      "error": "error C2065: 'KEY': 선언되지 않은 식별자 (QGMMainWindow.cpp:588)",
+      "timestamp": "2025-11-10T12:05:00Z",
+      "fixCommit": "764680f",
+      "cause": "Rebase conflict resolution chose HEAD version of analyticsConfig.h without KEY macro"
+    },
+    {
+      "commit": "8aa71ca",
+      "status": "rebase_build_success",
+      "message": "38개 커밋 rebase 통합 후 빌드",
+      "result": "✅ DongArch3D.exe 빌드 성공 (26MB)",
+      "timestamp": "2025-11-10T11:10:00Z",
+      "changes": "38 commits rebased, 2 conflicts resolved (CMakeLists.txt, analyticsConfig.h)"
+    },
+    {
+      "commit": "10b97a3",
+      "status": "build_success",
+      "message": "Qt 번역 파일 생성 후 빌드",
+      "result": "✅ DongArch3D.exe 빌드 성공 (26MB)",
+      "timestamp": "2025-11-10T10:25:00Z",
+      "changes": "4 Qt translation files generated (.qm)"
+    },
+    {
+      "commit": "e8881ed",
+      "status": "rebuild_success",
+      "message": "캡처 파일 추가 후 리빌드",
+      "result": "✅ DongArch3D.exe 리빌드 성공 (26MB)",
+      "timestamp": "2025-11-10T07:35:00Z",
+      "changes": "3 PNG screenshot files"
+    },
+    {
+      "commit": "f2867ee",
+      "status": "build_success",
+      "message": "UI 한국어화 + 크래시 방지",
+      "result": "✅ DongArch3D.exe 빌드 성공 (26MB)",
+      "timestamp": "2025-11-09T12:35:00Z",
+      "changes": "4 GUI files updated"
+    },
+    {
+      "commit": "62f1eb7",
+      "status": "build_success",
+      "message": "Qt5::Concurrent 링크 추가",
+      "result": "✅ DongArch3D.exe 생성 성공 (26MB)",
+      "timestamp": "2025-11-09T12:12:00Z"
+    },
+    {
+      "commit": "7ebd1aa",
+      "status": "linker_error",
+      "error": "19 QtConcurrent symbols missing",
+      "timestamp": "2025-11-09T11:55:30Z",
+      "fixCommit": "62f1eb7"
+    },
+    {
+      "commit": "a090bf5",
+      "status": "build_failed",
+      "error": "5 compilation errors (11/16 fixed)",
+      "timestamp": "2025-11-09T11:44:00Z",
+      "fixCommit": "7ebd1aa"
+    },
+    {
+      "commit": "79b2cd2",
+      "status": "build_failed",
+      "error": "9 compilation errors (7/16 fixed)",
+      "timestamp": "2025-11-09T11:26:00Z",
+      "fixCommit": "a090bf5"
+    },
+    {
+      "commit": "d357bb3",
+      "status": "build_failed",
+      "error": "16 compilation errors in DongArch modules",
+      "timestamp": "2025-11-09T10:44:00Z",
+      "fixCommit": "79b2cd2"
+    },
+    {
+      "commit": "cb4a02c",
+      "status": "build_failed",
+      "error": "C++ compilation errors (DongArchClipManager, SVGExporter, IllustratorBridge)",
+      "timestamp": "2025-11-09T10:25:30Z",
+      "fixCommit": "d357bb3"
+    },
+    {
+      "commit": "ac015ed",
+      "status": "build_failed",
+      "error": "RCC: Cannot find file 'section_top.svg' (archaeology_icons.qrc)",
+      "timestamp": "2025-11-09T10:12:25Z",
+      "fixCommit": "cb4a02c"
+    },
+    {
+      "commit": "6b3236e",
+      "status": "build_failed",
+      "error": "RCC: Cannot find file 'NPR/hatch_0-2.png'",
+      "timestamp": "2025-11-09T10:08:45Z",
+      "fixCommit": "a355f7a"
+    },
+    {
+      "commit": "2d34738",
+      "status": "build_failed",
+      "error": "RCC: Cannot find file 'report_single_page_template.tex'",
+      "fixCommit": "93b1ea4"
+    }
+  ],
+  "nextExpectation": "🎉 DongArch3D.exe 실행 가능 - 44 commits integrated (rebase), Phase 1-5, Qt translations, UI 완전 한국어화, 크래시 방지 완료!"
+}

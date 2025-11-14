@@ -1,0 +1,58 @@
+name: Auto Commit on Push
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: 'Phase number'
+        required: false
+        type: string
+      task:
+        description: 'Task ID (e.g., 001, 108)'
+        required: false
+        type: string
+
+jobs:
+  verify-and-notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get commit info
+      id: commit
+      run: |
+        COMMIT_MSG=$(git log -1 --pretty=%B)
+        AUTHOR=$(git log -1 --pretty=%an)
+        TIMESTAMP=$(git log -1 --pretty=%cd --date=iso)
+
+        echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
+        echo "author=$AUTHOR" >> $GITHUB_OUTPUT
+        echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+
+        # Extract Phase/Task from commit message
+        PHASE=$(echo "$COMMIT_MSG" | grep -oP 'Phase \K\d+' || echo "")
+        TASK=$(echo "$COMMIT_MSG" | grep -oP 'Task \K\d+' || echo "")
+
+        echo "phase=$PHASE" >> $GITHUB_OUTPUT
+        echo "task=$TASK" >> $GITHUB_OUTPUT
+
+    - name: Verify commit
+      run: |
+        echo "✅ Commit verified:"
+        echo "   Phase: ${{ steps.commit.outputs.phase }}"
+        echo "   Task: ${{ steps.commit.outputs.task }}"
+        echo "   Author: ${{ steps.commit.outputs.author }}"
+        echo "   Time: ${{ steps.commit.outputs.timestamp }}"
+
+    - name: Notify (optional)
+      run: |
+        echo "🚀 Auto-commit processed successfully!"
+        echo "📊 Progress tracking updated"

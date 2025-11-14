@@ -1,0 +1,38 @@
+# Build directories
+build*/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE
+.vscode/
+.vs/
+*.suo
+*.user
+
+# Archives
+_archived_old_files/
+*.zip
+
+# Logs
+*.log
+.logs/
+
+# Temporary
+nul
+*.tmp
+*.bak
+
+# Qt
+*.qm
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
